@@ -316,7 +316,7 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="querysField" min="-2" pref="58" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jProgressBar1" max="32767" attributes="0"/>
+                          <Component id="barraProgresoBusqueda" max="32767" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="botonBuscar" min="-2" pref="96" max="-2" attributes="0"/>
                       </Group>
@@ -343,7 +343,7 @@
                           <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
-                          <Component id="jProgressBar1" min="-2" pref="23" max="-2" attributes="0"/>
+                          <Component id="barraProgresoBusqueda" min="-2" pref="23" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -392,7 +392,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JProgressBar" name="jProgressBar1">
+        <Component class="javax.swing.JProgressBar" name="barraProgresoBusqueda">
         </Component>
       </SubComponents>
     </Container>

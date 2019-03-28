@@ -94,7 +94,7 @@ public class LogReader extends javax.swing.JFrame {
         querysField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         datoBuscarText = new javax.swing.JTextArea();
-        jProgressBar1 = new javax.swing.JProgressBar();
+        barraProgresoBusqueda = new javax.swing.JProgressBar();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -229,7 +229,7 @@ public class LogReader extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(querysField, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(barraProgresoBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -250,7 +250,7 @@ public class LogReader extends javax.swing.JFrame {
                             .addComponent(botonBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(52, 52, 52))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(barraProgresoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -365,15 +365,16 @@ public class LogReader extends javax.swing.JFrame {
                 botonBuscar.setText("Buscar");
             }
         } else {
-            Map<String, ArrayList<ArrayList<String>>> listado = new HashMap<>();
+            ArrayList<ArrayList<ArrayList<String>>> listado = new ArrayList<>();
             
             int querys = Integer.parseInt(querysField.getText());
             String datoBuscar = datoBuscarText.getText();
             
             for (int I = 0; I < directoriosAPI.size(); I++) {
+                //System.out.println(I);
                 try {
                     BufferedReader reader = new BufferedReader(new FileReader(directoriosAPI.get(I).getRuta()));
-                    ArrayList<ArrayList<String>> datosSirven = new ArrayList<>();
+                    ArrayList <ArrayList <String>> datosSirven = new ArrayList<>();
                     ArrayList<String> temporal = new ArrayList<>();
                     int temporalCont = 0;
                     String en;
@@ -404,8 +405,11 @@ public class LogReader extends javax.swing.JFrame {
                             temporalCont = 1;
                         }
                         
-                        reader.readLine();
+                        en = reader.readLine();
+                        //System.out.println("-");
                     }
+                   
+                    listado.add(datosSirven);
                     
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(LogReader.class.getName()).log(Level.SEVERE, null, ex);
@@ -414,6 +418,8 @@ public class LogReader extends javax.swing.JFrame {
                 }
 
             }
+            System.out.println(listado.size());
+            
         }
 
     }//GEN-LAST:event_botonBuscarActionPerformed
@@ -495,6 +501,7 @@ public class LogReader extends javax.swing.JFrame {
     private ArrayList<Dir> directorios = new ArrayList<>();
     private javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JProgressBar barraProgresoBusqueda;
     private javax.swing.JButton botonBuscar;
     private javax.swing.JButton botonExaminar;
     private javax.swing.JTextArea datoBuscarText;
@@ -519,7 +526,6 @@ public class LogReader extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
