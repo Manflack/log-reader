@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import resources.ObtenerDirectorios;
@@ -26,7 +27,7 @@ import resources.model.Dir;
  */
 public class LogReader extends javax.swing.JFrame {
 
-    public static void run(String args[]) {
+    public static void run() {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -213,6 +214,8 @@ public class LogReader extends javax.swing.JFrame {
         datoBuscarText.setRows(5);
         jScrollPane1.setViewportView(datoBuscarText);
 
+        barraProgresoBusqueda.setStringPainted(true);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -229,7 +232,7 @@ public class LogReader extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(querysField, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(barraProgresoBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(barraProgresoBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -266,14 +269,14 @@ public class LogReader extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelRadioButtonsArea, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelRadioButtonsArea, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -315,6 +318,8 @@ public class LogReader extends javax.swing.JFrame {
         jCheckBox11.setVisible(false);
         jCheckBox12.setVisible(false);
         jCheckBox13.setVisible(false);
+
+        //barraProgresoBusqueda.setStringPainted(true);
     }
 
     private void botonExaminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonExaminarMouseClicked
@@ -351,6 +356,8 @@ public class LogReader extends javax.swing.JFrame {
         }
 
         if (botonBuscar.getText().equals("Actualizar")) {
+            //int x=40;
+            //setValueProgBar(x);
             directoriosAPI = new ArrayList<>();
             directorios = new ArrayList<>();
             ObtenerDirectorios.obtenerDirectorios(new File(jTextField2.getText()), directoriosAPI);
@@ -359,22 +366,29 @@ public class LogReader extends javax.swing.JFrame {
             botonBuscar.setEnabled(true);
             radioButtonTodos.setEnabled(true);
             sanitizarArrays(directoriosAPI, directorios);
-            System.out.println("Se ha actualizado la lista correctamente.");
+            //System.out.println("Se ha actualizado la lista correctamente.");
 
             if (directoriosAPI.size() != 0 || directorios.size() != 0) {
                 botonBuscar.setText("Buscar");
             }
         } else {
             ArrayList<ArrayList<ArrayList<String>>> listado = new ArrayList<>();
-            
+
             int querys = Integer.parseInt(querysField.getText());
             String datoBuscar = datoBuscarText.getText();
-            
+            //barraProgresoBusqueda = new javax.swing.JProgressBar(0,100);
+
+            barraProgresoBusqueda.setMinimum(1);
+            barraProgresoBusqueda.setMaximum(directoriosAPI.size()-1);
+            //barraProgresoBusqueda.setValue(50);
+
             for (int I = 0; I < directoriosAPI.size(); I++) {
+                barraProgresoBusqueda.setValue(I);
+                barraProgresoBusqueda.update(barraProgresoBusqueda.getGraphics());
                 //System.out.println(I);
                 try {
                     BufferedReader reader = new BufferedReader(new FileReader(directoriosAPI.get(I).getRuta()));
-                    ArrayList <ArrayList <String>> datosSirven = new ArrayList<>();
+                    ArrayList<ArrayList<String>> datosSirven = new ArrayList<>();
                     ArrayList<String> temporal = new ArrayList<>();
                     int temporalCont = 0;
                     String en;
@@ -382,35 +396,38 @@ public class LogReader extends javax.swing.JFrame {
                     boolean datosCoinciden = false;
                     en = reader.readLine();
                     while (en != null && datosSirven.size() < querys) {
-                        if(en.charAt(0) == '2')
+                        //System.out.println(directoriosAPI.get(I).getRuta() + "-" + en);
+                        if (en.length() != 0 && en.charAt(0) == '2') {
                             temporalCont++;
-                        
-                        if(temporalCont != 2)
-                            temporal.add(en);
-                        
-                        if(en.contains(datoBuscar))
+                        }
+
+                        if (temporalCont != 2) {
+                            temporal.add(en + "\n");
+                        }
+
+                        if (en.contains(datoBuscar)) {
                             datosCoinciden = true;
-                        
-                        if(temporalCont == 2 && datosCoinciden == true)
-                        {
+                        }
+
+                        if (temporalCont == 2 && datosCoinciden == true) {
+                            //for(String i: temporal)
+                            //    System.out.println(i);
                             temporal.add(directoriosAPI.get(I).getRuta());
                             datosSirven.add(temporal);
                             temporal = new ArrayList<>();
                             temporal.add(en);
                             datosCoinciden = false;
-                        }
-                        else if(temporalCont == 2) {
-                            temporal = new ArrayList <>();
+                        } else if (temporalCont == 2) {
+                            temporal = new ArrayList<>();
                             temporal.add(en);
                             temporalCont = 1;
                         }
-                        
+
                         en = reader.readLine();
-                        //System.out.println("-");
                     }
-                   
+
                     listado.add(datosSirven);
-                    
+
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(LogReader.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
@@ -418,8 +435,16 @@ public class LogReader extends javax.swing.JFrame {
                 }
 
             }
-            System.out.println(listado.size());
             
+            
+            
+            for (int j = 0; j < listado.size(); j++) {
+                for (int i = 0; i < listado.get(j).size(); i++) {
+                    System.out.println(listado.get(j).get(i));
+                }
+                System.out.println("");
+            }
+
         }
 
     }//GEN-LAST:event_botonBuscarActionPerformed
@@ -488,6 +513,10 @@ public class LogReader extends javax.swing.JFrame {
         }
     }
 
+    private void setValueProgBar(int value) {
+        barraProgresoBusqueda.setValue(value);
+    }
+
     public void setDirectoriosAPI(ArrayList<Dir> directoriosAPI) {
         this.directoriosAPI = directoriosAPI;
     }
@@ -534,4 +563,8 @@ public class LogReader extends javax.swing.JFrame {
     private javax.swing.JTextField querysField;
     private javax.swing.JRadioButton radioButtonTodos;
     // End of variables declaration//GEN-END:variables
+
+    private boolean isNullOrEmpty(String en) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
