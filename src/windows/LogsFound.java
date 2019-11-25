@@ -1,5 +1,7 @@
 package windows;
 
+import java.util.ArrayList;
+
 public class LogsFound extends javax.swing.JFrame {
 
         public static void run() {
@@ -22,13 +24,17 @@ public class LogsFound extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LogsFound().setVisible(true);
+                new LogsFound(null).setVisible(true);
             }
         });
     }
     
-    public LogsFound() {
+    public LogsFound(ArrayList <ArrayList <ArrayList <String>>> list) {
         initComponents();
+        if(list != null)
+            myList = list;
+        
+        jTextArea1.setText(myList.toString());
     }
 
     @SuppressWarnings("unchecked")
@@ -53,9 +59,7 @@ public class LogsFound extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,7 +137,7 @@ public class LogsFound extends javax.swing.JFrame {
 
 
 
-
+    private ArrayList <ArrayList <ArrayList <String>>> myList;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;

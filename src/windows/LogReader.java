@@ -96,6 +96,8 @@ public class LogReader extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         datoBuscarText = new javax.swing.JTextArea();
         barraProgresoBusqueda = new javax.swing.JProgressBar();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -209,12 +211,32 @@ public class LogReader extends javax.swing.JFrame {
         querysField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         querysField.setText("0");
         querysField.setToolTipText("Ingrese aquí la cantidad de flujos que desea obtener...");
+        querysField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                querysFieldActionPerformed(evt);
+            }
+        });
 
         datoBuscarText.setColumns(20);
         datoBuscarText.setRows(5);
         jScrollPane1.setViewportView(datoBuscarText);
 
         barraProgresoBusqueda.setStringPainted(true);
+
+        jRadioButton1.setText("Solo operacional");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
+
+        jRadioButton2.setSelected(true);
+        jRadioButton2.setText("Servicio y luego operacional");
+        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -226,7 +248,10 @@ public class LogReader extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jRadioButton2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jRadioButton1))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -240,8 +265,11 @@ public class LogReader extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(jLabel2)
+                .addGap(2, 2, 2)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jRadioButton1)
+                    .addComponent(jRadioButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -318,6 +346,15 @@ public class LogReader extends javax.swing.JFrame {
         jCheckBox11.setVisible(false);
         jCheckBox12.setVisible(false);
         jCheckBox13.setVisible(false);
+        
+        /*ArrayList <ArrayList <ArrayList <String>>> list3 = new ArrayList <ArrayList <ArrayList <String>>>();
+        ArrayList <ArrayList <String>> list2 = new ArrayList <ArrayList <String>>();
+        ArrayList <String> list1 = new ArrayList <> ();
+        list1.add("prueba");
+        list2.add(list1);
+        list3.add(list2);
+        LogsFound logsFound = new LogsFound(list3);
+        logsFound.setVisible(true);*/
 
         //barraProgresoBusqueda.setStringPainted(true);
     }
@@ -425,8 +462,8 @@ public class LogReader extends javax.swing.JFrame {
 
                         en = reader.readLine();
                     }
-
-                    listado.add(datosSirven);
+                    if(!datosSirven.isEmpty())
+                        listado.add(datosSirven);
 
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(LogReader.class.getName()).log(Level.SEVERE, null, ex);
@@ -436,15 +473,16 @@ public class LogReader extends javax.swing.JFrame {
 
             }
             
-            
-            
-            for (int j = 0; j < listado.size(); j++) {
-                for (int i = 0; i < listado.get(j).size(); i++) {
+            /*for (int j = 0; j < listado.size(); j++) {
+                for (int i = 0; i < listado.get(j).size(); i++) {        
                     System.out.println(listado.get(j).get(i));
                 }
                 System.out.println("");
-            }
-
+            }*/
+            
+            LogsFound logsFound = new LogsFound(listado);
+            logsFound.setVisible(true);
+            //listado.set(0, 0, 0, "");
         }
 
     }//GEN-LAST:event_botonBuscarActionPerformed
@@ -454,6 +492,18 @@ public class LogReader extends javax.swing.JFrame {
         directoriosAPI = new ArrayList<>();
         botonBuscar.setText("Actualizar");
     }//GEN-LAST:event_jTextField2KeyPressed
+
+    private void querysFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_querysFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_querysFieldActionPerformed
+
+    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+        jRadioButton1.setSelected(false);
+    }//GEN-LAST:event_jRadioButton2ActionPerformed
+
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        jRadioButton2.setSelected(false);
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     private javax.swing.JCheckBox getNextAvailable() {
         for (java.awt.Component c : panelRadioButtonsArea.getComponents()) {
@@ -555,6 +605,8 @@ public class LogReader extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
